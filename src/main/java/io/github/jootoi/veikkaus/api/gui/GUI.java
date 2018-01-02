@@ -27,7 +27,7 @@ package io.github.jootoi.veikkaus.api.gui;
  */
 /*
  * ^^ Vain siltä varalta että joskus lisään mahdollisuuden myös pelata käyttäen Veikkauksen APIa
- * ja ohjelma ei pelaakaan mitä käyttäjä haluaa tai luuli haluavansa.
+ * ja ohjelma ei pelaakaan mitä käyttäjä haluaa tai luuli haluavansa. Vaikka ei Amerikassa ollakkaan.
  */
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -201,7 +201,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Events", jPanel1);
+        jTabbedPane1.addTab("Loki", jPanel1);
 
         warnings.setEditable(false);
         warnings.setColumns(20);
@@ -226,7 +226,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Warnings", jPanel5);
+        jTabbedPane1.addTab("Varoitukset", jPanel5);
 
         jButton1.setText("Onko mainloop elossa?");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -286,7 +286,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Settings", Settings);
+        jTabbedPane1.addTab("Kontrollit", Settings);
 
         jTabbedPane7.addTab("Debug", jTabbedPane1);
 
