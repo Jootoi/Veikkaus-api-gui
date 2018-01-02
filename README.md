@@ -1,21 +1,21 @@
-#Graafinen käyttöliittymä Veikkauksen API:lle
+# Graafinen käyttöliittymä Veikkauksen API:lle
 
 Ohjelma mahdollistaa joidenkin [Veikkauksen API](https://github.com/VeikkausOy/sport-games-robot):n antamien tietojen selaamisen graafisessa muodossa.
 Toistaiseksi ohjelma näyttää vain Toto peleihin liittyviä tietoja.
 
-##Miksi?
+## Miksi?
 
 Ohjelman tarkoituksena on toimia laajenevana harjoitustyönä JSON APIsta, http yhteyksistä, graaffisista käyttöliittymistä, säikeistyksestä ja yleisesti Java ohjelmoinnista.
 Samalla ohjelma voi toimia esimerkkinä jos haluaa toteuttaa [Veikkauksen API](https://github.com/VeikkausOy/sport-games-robot) sivulla kuvatun kaltaisen pelirobotin Javalla. 
 
-##Asentaminen
+## Asentaminen
 
-###Tapa 1: Lataa valmiit tiedostot
+### Tapa 1: Lataa valmiit tiedostot
 
 Ohjelma ja sen vaatimat kirjastot löytyvät käyttövalmiina [7zip pakkauksena releases sivulta](https://github.com/Jootoi/Veikkaus-api-gui/releases/tag/1.0)
 Pura pakkaus halumaasi kansioon sopivaa ohjelmistoa käyttäen.
 
-###Tapa 2: Git + Maven
+### Tapa 2: Git + Maven
 
 Avaa komentorivillä kansio johon haluat tallettaa tiedostot. Ladataksesi lähdekoodi tiedostot kirjoita komentoriville:
 ```
@@ -27,14 +27,14 @@ mvn clean install
 ```
 
 
-##Käyttö
+## Käyttö
 
 Käynnistä lataamasi/itse kääntämäsi veikkaus-api-gui-1.0.jar tiedosto valitsemallasi tavalla.
 Käynnistyksen jälkeen esiin kuuluisi tulla käyttöliittymä, jonka kautta tietoja on mahdollist selata kunhan ohjelma saa kaiken tarvitsemansa ladattua.
 Käyttöliittymän Toto välilehdeltä löytyy kaikki päivän pelikohteet jaoteltuna paikkakunnan ja lähdön mukaan.
 Debug välilehdeltä voi seurata tarkemmin ohjelman toimintaa, sekä sammuttaa/käynnistää APIn tietojen hakemisen.
 
-##TODO
+## TODO
 Asioita joita tulen ehkä aikanaan lisäämään ohjelmaan:
 
 +Mahdollisuus pelata Veikkauksen pelejä
@@ -42,7 +42,7 @@ Asioita joita tulen ehkä aikanaan lisäämään ohjelmaan:
 +Mahdollisuus vaihtaa käyttöliittymän kieli
 +Nopeampi tietojen haku API:sta (API sallii viiden säikeen ajamisen)
 
-##Lisenssi
+## Lisenssi
 
 Copyright (c) 2017, Joonas Toimela
 All rights reserved.
