@@ -31,16 +31,17 @@ mvn clean install
 
 Käynnistä lataamasi/itse kääntämäsi veikkaus-api-gui-1.0.jar tiedosto valitsemallasi tavalla.
 Käynnistyksen jälkeen esiin kuuluisi tulla käyttöliittymä, jonka kautta tietoja on mahdollist selata kunhan ohjelma saa kaiken tarvitsemansa ladattua.
+
 Käyttöliittymän Toto välilehdeltä löytyy kaikki päivän pelikohteet jaoteltuna paikkakunnan ja lähdön mukaan.
 Debug välilehdeltä voi seurata tarkemmin ohjelman toimintaa, sekä sammuttaa/käynnistää APIn tietojen hakemisen.
 
 ## TODO
 Asioita joita tulen ehkä aikanaan lisäämään ohjelmaan:
 
-+Mahdollisuus pelata Veikkauksen pelejä
-+Tietoa muistakin kuin toto kohteista
-+Mahdollisuus vaihtaa käyttöliittymän kieli
-+Nopeampi tietojen haku API:sta (API sallii viiden säikeen ajamisen)
++ Mahdollisuus pelata Veikkauksen pelejä
++ Tietoa muistakin kuin toto kohteista
++ Mahdollisuus vaihtaa käyttöliittymän kieli
++ Nopeampi tietojen haku API:sta (API sallii viiden säikeen ajamisen)
 
 ## Lisenssi
 
