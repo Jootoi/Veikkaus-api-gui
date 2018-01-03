@@ -67,11 +67,11 @@ public class RunnerInfo extends Updatable {
     
     
     public RunnerInfo() {}
-	public RunnerInfo(int startNum, int id) {
-		startNumber = startNum;
-		raceId = id;
-		super.updateTime = System.currentTimeMillis();
-	}
+    public RunnerInfo(int startNum, int id) {
+        startNumber = startNum;
+        raceId = id;
+        super.updateTime = System.currentTimeMillis();
+    }
     
     
     

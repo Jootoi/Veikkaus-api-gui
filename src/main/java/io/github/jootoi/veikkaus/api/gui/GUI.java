@@ -52,7 +52,7 @@ import javax.swing.JTable;
 Tämä ohjelma esittää Veikkauksen avoimesta rajapinnasta saatavaa dataa graaffisessa, ihmiselle soveltuvassa muodossa.
 
 Ohjelman riippuvuudet (dependencies):
-Gson: https://github.com/google/gson	
+Gson: https://github.com/google/gson    
 Gsonia käytetään APIsta saatavien JSON muotoisen datan deserialisointiin.
 OkHttp3: https://github.com/square/okhttp
 OkHttp3ea käytetään http pyyntöjen lähettämiseen
@@ -309,11 +309,11 @@ public class GUI extends javax.swing.JFrame {
 private void resultButtonActionPerformed(java.awt.event.ActionEvent evt) {                                         
         MyButton source = (MyButton)evt.getSource();
         int raceID = source.getId();
-		if(raceID!=-1 && RaceTabforRaceId.get(raceID).indexOfTab("Tulokset")==-1) {
-			Races upd = new Races(raceID);
-			upd.updateTime = System.currentTimeMillis();
-			updateQue.add(upd);
-		}
+        if(raceID!=-1 && RaceTabforRaceId.get(raceID).indexOfTab("Tulokset")==-1) {
+            Races upd = new Races(raceID);
+            upd.updateTime = System.currentTimeMillis();
+            updateQue.add(upd);
+        }
     }
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         MyButton source = (MyButton)evt.getSource();
@@ -323,24 +323,24 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
            updateQue.put(u);
         }
     }
-	
-	//Välittää työsäikeelle käskyn hakea tarkemmat tiedot yksittäisestä kisaajasta.
+    
+    //Välittää työsäikeelle käskyn hakea tarkemmat tiedot yksittäisestä kisaajasta.
     private void jTablePressEvent(java.awt.event.MouseEvent e) {
         JTable source = (JTable)e.getSource();
         int id = IdbyOddsTable.get(source);
         int row = source.rowAtPoint(e.getPoint());
-		RunnerInfo u = new RunnerInfo(row,id);
-		updateQue.put(u);
+        RunnerInfo u = new RunnerInfo(row,id);
+        updateQue.put(u);
     }
     
     
     //Testaa onko työsäie kaatunut, pääasiassa debugausta varten. Myös restart nappi olis kiva.
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(main.isAlive()) {
-			jLabel4.setText("Joo on elossa");
+            jLabel4.setText("Joo on elossa");
         }
         else {
-			jLabel4.setText("Ei, se kuoli");
+            jLabel4.setText("Ei, se kuoli");
         }                                       
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -360,7 +360,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
        u.updateTime = System.currentTimeMillis();
        updateQue.add(u);
     }//GEN-LAST:event_totoFullUpdateActionPerformed
-	
+    
 
     //Lyhyt main metodi kaiken muun käynnistämistä varten.
     public static void main(String[] args) {
@@ -436,23 +436,23 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
     private javax.swing.JTextArea warnings;
     // End of variables declaration//GEN-END:variables
 
-	//Sama jatkuu...
+    //Sama jatkuu...
     private static Thread main;
     private static DelayQueue<Updatable> updateQue;
     private ConcurrentSkipListMap<Integer, JTable> oddsTablebyId = new ConcurrentSkipListMap<>();
     private HashMap<JTable, Integer> IdbyOddsTable = new HashMap<>();
     private ConcurrentSkipListMap<Integer, JPanel> oddsRightPanelbyId = new ConcurrentSkipListMap<>();
     private HashMap<Integer,Races> RaceforPoolid = new HashMap<>();
-	private HashMap<Integer, JTabbedPane> RaceTabforRaceId = new HashMap<>(); //Tarvitaan lopputulosten lisäämiseen
+    private HashMap<Integer, JTabbedPane> RaceTabforRaceId = new HashMap<>(); //Tarvitaan lopputulosten lisäämiseen
     private final DateTimeFormatter timeOnly = DateTimeFormatter.ofPattern("HH:mm:ss");
     //Ja nyt on oikeasti muuttujat määritelty
-	
-	
-	/*
-	Kirjoittaa events/tapahtumat nimisellä välilehdellä olevaan tekstilaatikkoon.
-	Jokaisen rivin alkuun lisätään järjestelmän kellonaika
-	Käytetään lähinnä työsäikeen toiminnasta raportointiin.
-	*/
+    
+    
+    /*
+    Kirjoittaa events/tapahtumat nimisellä välilehdellä olevaan tekstilaatikkoon.
+    Jokaisen rivin alkuun lisätään järjestelmän kellonaika
+    Käytetään lähinnä työsäikeen toiminnasta raportointiin.
+    */
     public void writetoEvents(String str) {
         String timeString = LocalDateTime.now().format(timeOnly);
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -462,11 +462,11 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         });
     }
 
-	/*
-	Kirjoittaa warnings/varoitukset nimisellä välilehdellä olevaan tekstilaatikkoon.
-	Jokaisen rivin alkuun lisätään järjestelmän kellonaika
-	Käytetään lähinnä työsäikeen virheistä raportointiin.
-	*/
+    /*
+    Kirjoittaa warnings/varoitukset nimisellä välilehdellä olevaan tekstilaatikkoon.
+    Jokaisen rivin alkuun lisätään järjestelmän kellonaika
+    Käytetään lähinnä työsäikeen virheistä raportointiin.
+    */
     public void writetoWarnings(String str) {
         String timeString = LocalDateTime.now().format(timeOnly);
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -476,7 +476,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         });
     }
 
-	//Tarkoitettu työsäikeen sammuttamiseen. Älä kutsu EDTstä.
+    //Tarkoitettu työsäikeen sammuttamiseen. Älä kutsu EDTstä.
     private void destroyThread(Thread t) {
         int max = 3;
         if (t != null) {
@@ -506,7 +506,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         }
     }
 
-	//Päivittää päivän tapahtumat omaan taulukoonsa
+    //Päivittää päivän tapahtumat omaan taulukoonsa
     public void updateEventsTable(ArrayList<Events> data) {
         Object[][] table = new Object[data.size()][4];
         int i = 0;
@@ -530,16 +530,16 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
             public void run() {
 
                 jTable1.setModel(new javax.swing.table.DefaultTableModel(table, names){
-					@Override
-					public boolean isCellEditable(int row, int column) {
-						return false;
-					}
-				});
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                });
             }
         });
     }
 
-	//Lisää tapahtuma sivulle oman välilehden joka tapahtumalle ja talukoi joitain tietoja lähdöistä.
+    //Lisää tapahtuma sivulle oman välilehden joka tapahtumalle ja talukoi joitain tietoja lähdöistä.
     public void racestoEvents(ArrayList<Events> data) {
         String[] commonLabels = new String[]{"Lähtö #", "Matka", "Lähtö aika", "Monte?"};
         int i = 1;
@@ -591,32 +591,32 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
             }
         }
     }
-	/*
-	Metodia käytetään kaikkien päivän tapahtumien kaikkien lähtöjen kaikkien pelikohteiden päivittämiseen.
-	Metodi luo jokaiselle tapahtumalle oman välilehden, jonka alle luodaan joka lähdölle oma välilehti, jonka 
-	alle taas luodaan välilehti jokaiselle kyseisen lähdön pelikohteelle. Lisäksi metodi tyhjentää ja luo uudestaan
-	kaikki kyseisiin välilehtiin liittyvät assosiatiiviset tietorakenteet.
-	*/
+    /*
+    Metodia käytetään kaikkien päivän tapahtumien kaikkien lähtöjen kaikkien pelikohteiden päivittämiseen.
+    Metodi luo jokaiselle tapahtumalle oman välilehden, jonka alle luodaan joka lähdölle oma välilehti, jonka 
+    alle taas luodaan välilehti jokaiselle kyseisen lähdön pelikohteelle. Lisäksi metodi tyhjentää ja luo uudestaan
+    kaikki kyseisiin välilehtiin liittyvät assosiatiiviset tietorakenteet.
+    */
     public void fillPoolsTab(ArrayList<Events> data) {
         jTabbedPane4.removeAll();
         oddsTablebyId.clear();
         oddsRightPanelbyId.clear();
         IdbyOddsTable.clear();
         RaceforPoolid.clear();
-		RaceTabforRaceId.clear();
-		//Uloin luuppi luo tapahtumien välilehdet
+        RaceTabforRaceId.clear();
+        //Uloin luuppi luo tapahtumien välilehdet
         for (Events e : data) {
             if (e != null) {
                 javax.swing.JTabbedPane tmp1 = new javax.swing.JTabbedPane();
                 String tabname1 = e.trackName;
                 if (e.getRaces() != null) {
-					//Sitten luodaan lähtöjen välilehdet
+                    //Sitten luodaan lähtöjen välilehdet
                     for (Races r : e.getRaces().collection) {
 
                         javax.swing.JTabbedPane tmp2 = new javax.swing.JTabbedPane();
                         String tabname2 = "Lähtö " + Integer.toString(r.number);
-						RaceTabforRaceId.put(r.raceId, tmp2);
-						//Ja lopuksi pelikohteiden välilehdet ja taulukot.
+                        RaceTabforRaceId.put(r.raceId, tmp2);
+                        //Ja lopuksi pelikohteiden välilehdet ja taulukot.
                         for (Pools p : r.getPools()) {
                             RaceforPoolid.put(p.poolId, r);
                             if (p.getPool() != null) {
@@ -624,7 +624,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
                                 javax.swing.JPanel tmpContainer = new javax.swing.JPanel();
                                 tmpContainer.setLayout(new BorderLayout());
                                 MyButton tmpButton = new MyButton("Päivitä");
-								MyButton resultButton = new MyButton("Hae tulokset, jos mahdollista");
+                                MyButton resultButton = new MyButton("Hae tulokset, jos mahdollista");
                                 tmpButton.setRelatedObject(p);
                                 resultButton.setId(r.raceId);
                                 tmpButton.addActionListener(new java.awt.event.ActionListener() {
@@ -632,12 +632,12 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
                                         jButton2ActionPerformed(evt);
                                     }
                                 });
-								resultButton.addActionListener(new java.awt.event.ActionListener() {
+                                resultButton.addActionListener(new java.awt.event.ActionListener() {
                                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                                         resultButtonActionPerformed(evt);
                                     }
                                 });
-								
+                                
                                 
                                 javax.swing.JPanel labelContainer = new javax.swing.JPanel();
                                 labelContainer.setLayout(new BoxLayout(labelContainer, BoxLayout.Y_AXIS));
@@ -652,13 +652,13 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
                                 labelContainer.add(startTime);
                                 labelContainer.add(PoolLabel);
                                 labelContainer.add(tmpButton);
-								labelContainer.add(resultButton);
+                                labelContainer.add(resultButton);
                                 //paaneli luotu
                                 //Lisätään paneeli mappiin myöhempää käyttöä varten, avaimeksi pelikohteen id-luku.
                                 oddsRightPanelbyId.put(p.poolId, labelContainer);
                                 tmpContainer.add(labelContainer,BorderLayout.EAST);
                                 
-								//Aloitetaan taulukoiden luonti.
+                                //Aloitetaan taulukoiden luonti.
                                 javax.swing.JScrollPane tmp4 = new javax.swing.JScrollPane();
                                 tmpContainer.add(tmp4);
                                 String tabname3 = p.poolName;
@@ -892,7 +892,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 
                                 
                                 //Myös talukoiden löytäminen kohteen id:n perusteella on kätevää (ja toisinpäin)
-								//kahteen suuntaan assosiatiivinen kartta olisi käynyt myös.
+                                //kahteen suuntaan assosiatiivinen kartta olisi käynyt myös.
                                 oddsTablebyId.put(p.poolId, tmp3);
                                 IdbyOddsTable.put(tmp3,p.poolId);
 
@@ -921,8 +921,8 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         }
     }
 
-	//Sama kuin edellinen, mutta tämä metodi päivittää vain yhden pelikohteen. Metodi myös olettaa,
-	//että päivitettävä sivu on jo olemassa.
+    //Sama kuin edellinen, mutta tämä metodi päivittää vain yhden pelikohteen. Metodi myös olettaa,
+    //että päivitettävä sivu on jo olemassa.
     public boolean updateOddsbyId(int id, Pools data) {
         JTable Jtable = oddsTablebyId.get(id);
         JPanel labelPanel = oddsRightPanelbyId.get(id);
@@ -1210,31 +1210,31 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         }
         else return false;
     }
-	//Näyttä lisätietoikkunan ykisttäisestä kisaajasta.
-	void showInfoDialog(RunnerInfo data) {
-		String[] messages = new String[12];
-			messages[0]="Hevosen nimi: " + data.horseName;
-			messages[1]="Lähtö numero: " + data.startNumber;
-			messages[2]="Etukengät: " + data.frontShoes;
-			messages[3]="Takakengät: " + data.rearShoes;
-			messages[4]="Ikä: " + data.horseAge;
-			messages[5]="Isä: " + data.sire;
-			messages[6]="Emä: " + data.dam;
-			messages[7]="Sukupuoli: " + data.gender;
-			messages[8]="";
-			messages[9]="Ohjastajan nimi: " + data.driverName;
-			messages[10]="Valmentajan nimi: " + data.coachName;
-			messages[11]="Omistajan nimi: " + data.ownerName;
+    //Näyttä lisätietoikkunan ykisttäisestä kisaajasta.
+    void showInfoDialog(RunnerInfo data) {
+        String[] messages = new String[12];
+            messages[0]="Hevosen nimi: " + data.horseName;
+            messages[1]="Lähtö numero: " + data.startNumber;
+            messages[2]="Etukengät: " + data.frontShoes;
+            messages[3]="Takakengät: " + data.rearShoes;
+            messages[4]="Ikä: " + data.horseAge;
+            messages[5]="Isä: " + data.sire;
+            messages[6]="Emä: " + data.dam;
+            messages[7]="Sukupuoli: " + data.gender;
+            messages[8]="";
+            messages[9]="Ohjastajan nimi: " + data.driverName;
+            messages[10]="Valmentajan nimi: " + data.coachName;
+            messages[11]="Omistajan nimi: " + data.ownerName;
 
-		javax.swing.JFrame thisFrame = this;
-		java.awt.EventQueue.invokeLater(new Runnable() {
+        javax.swing.JFrame thisFrame = this;
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-				JOptionPane.showMessageDialog(thisFrame, messages, "Info", JOptionPane.INFORMATION_MESSAGE);
-			}});
-		
-	}
+                JOptionPane.showMessageDialog(thisFrame, messages, "Info", JOptionPane.INFORMATION_MESSAGE);
+            }});
+        
+    }
     /*Lisää tulokset välilehden pelattavien peikohteiden välilehtien perään ja näyttää sivulla tulokset kyseistä lähdöstä */
-	void showResults(int raceId, Tulokset t) {
+    void showResults(int raceId, Tulokset t) {
         if(t.toteResult != null) {
             JTabbedPane correctTab = RaceTabforRaceId.get(raceId);
 

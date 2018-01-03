@@ -60,7 +60,7 @@ public class mainloop extends Thread {
     int waitBetweenUpdates = 10; //päivitysten välinen aika minuutteina
     int startAutoUpdate = 60; //kuinka monta minuuttia ennen lähtöä automaattinen päivittäminen alkaa.
     
-	//Alustaa joitakin arvoja ennen säikeen käynnistämistä.
+    //Alustaa joitakin arvoja ennen säikeen käynnistämistä.
     public mainloop(GUI gui, DelayQueue uq, boolean restart) {
         UI = gui;
         updateQue = uq;
@@ -76,10 +76,10 @@ public class mainloop extends Thread {
 
         //Mainloop
         while (!stop) {
-			
+            
             Updatable u = null;
             Updatable pu = updateQue.peek();
-			
+            
             long delay = pu != null ? pu.getDelay(TimeUnit.SECONDS):60; //Jos jonossa ei ole työtehtäviä odotetaan minuutti ennen uudelleen tarkistusta (ei kuuluisi tapahtua).
             if (delay > 0) {
                 UI.writetoEvents("Seuraavan päivityksen oletettu odotusaika: " + delay + " sekuntia");
@@ -91,27 +91,27 @@ public class mainloop extends Thread {
                 UI.writetoWarnings("Odottaminen keskeytyi: " + ex);
             }
             if (u != null) {
-				//Alle 2 minuuttia vanhat päivitykset ajetaan, jos päivityksen määräaika umpeutui yli 2min sitten päivitystä ei ajeta.
+                //Alle 2 minuuttia vanhat päivitykset ajetaan, jos päivityksen määräaika umpeutui yli 2min sitten päivitystä ei ajeta.
                 if (u.getDelay(TimeUnit.MILLISECONDS) < (-120 * 1000)) {
                     UI.writetoWarnings("Poistettiin kohde päivitysjonosta, koska päivityshetki oli " + u.getDelay(TimeUnit.SECONDS) + " sekuntia sitten.");
                 }
                 else if (u instanceof Pools) {
                     Pools p = (Pools) u;
                     Pool poolNew = null;
-					try {
-						poolNew = getKertoimet(p.poolId);
-					}
-					catch (IOException ex) {
-						UI.writetoWarnings(ex.getMessage());
-					}
-					if(poolNew != null) {
-						p.setPool(poolNew);
-					}
-					long newUpdateTime =  p.updateTime+waitBetweenUpdates*60*1000;
-					if(newUpdateTime < p.firstRaceStartTime) {
-						p.updateTime = newUpdateTime;
-						updateQue.add(p);
-					}
+                    try {
+                        poolNew = getKertoimet(p.poolId);
+                    }
+                    catch (IOException ex) {
+                        UI.writetoWarnings(ex.getMessage());
+                    }
+                    if(poolNew != null) {
+                        p.setPool(poolNew);
+                    }
+                    long newUpdateTime =  p.updateTime+waitBetweenUpdates*60*1000;
+                    if(newUpdateTime < p.firstRaceStartTime) {
+                        p.updateTime = newUpdateTime;
+                        updateQue.add(p);
+                    }
 
                     boolean succes = UI.updateOddsbyId(p.poolId, p);
                     if (!succes) {
@@ -121,54 +121,54 @@ public class mainloop extends Thread {
                 else if (u instanceof Races) {
                     Races r = (Races) u;
                     Tulokset result = null;
-					try {
-						result = getResult(r.raceId);
-					}
-					catch (IOException ex) {
-						UI.writetoWarnings(ex.getMessage());
-					}
+                    try {
+                        result = getResult(r.raceId);
+                    }
+                    catch (IOException ex) {
+                        UI.writetoWarnings(ex.getMessage());
+                    }
                     if (result != null) {
-						
-						UI.showResults(r.raceId, result);
+                        
+                        UI.showResults(r.raceId, result);
                      }
-					else {
-						r.updatesTried++;
-						if(r.updatesTried < 5) {
-							UI.writetoWarnings("Tulosten haku epäonnistui. raceID: " + r.raceId + ". Yritetään uudetaan 5 minuutin päästä.");
-							r.updateTime += 5*60*1000;
-							updateQue.add(r);
-						}
-						else {
-							UI.writetoWarnings("Tulosten haku epäonnistui viidennen kerran. raceID: " + r.raceId + ". Ei yritetä uudelleen.");
-						}
-						
-					}
+                    else {
+                        r.updatesTried++;
+                        if(r.updatesTried < 5) {
+                            UI.writetoWarnings("Tulosten haku epäonnistui. raceID: " + r.raceId + ". Yritetään uudetaan 5 minuutin päästä.");
+                            r.updateTime += 5*60*1000;
+                            updateQue.add(r);
+                        }
+                        else {
+                            UI.writetoWarnings("Tulosten haku epäonnistui viidennen kerran. raceID: " + r.raceId + ". Ei yritetä uudelleen.");
+                        }
+                        
+                    }
                 }
                 else if (u instanceof Eventcollection) {
                     dailyUpdate();
                 }
-				else if (u instanceof RunnerInfo) {
-					RunnerInfo r = (RunnerInfo) u;
-					RunnerInfoCollection res = null;
-					try {
-						res = getRunnerInfo(r.raceId, "pool");
-					}
-					catch (IOException ex) {
-						UI.writetoWarnings(ex.getMessage());
-					}
-					if(res != null) {
-						try {
-							r = res.collection.get(r.startNumber);
-							UI.showInfoDialog(r);
-						}
-						catch(IndexOutOfBoundsException e) {
-							UI.writetoWarnings("Jokin meni vikaan etsittäessä juoksijan tietoja: " + e);
-						}
-					}
-					else {
-						UI.writetoWarnings("Jokin meni vikaan etsittäessä juoksijan tietoja: " + res.description);
-					}
-				}
+                else if (u instanceof RunnerInfo) {
+                    RunnerInfo r = (RunnerInfo) u;
+                    RunnerInfoCollection res = null;
+                    try {
+                        res = getRunnerInfo(r.raceId, "pool");
+                    }
+                    catch (IOException ex) {
+                        UI.writetoWarnings(ex.getMessage());
+                    }
+                    if(res != null) {
+                        try {
+                            r = res.collection.get(r.startNumber);
+                            UI.showInfoDialog(r);
+                        }
+                        catch(IndexOutOfBoundsException e) {
+                            UI.writetoWarnings("Jokin meni vikaan etsittäessä juoksijan tietoja: " + e);
+                        }
+                    }
+                    else {
+                        UI.writetoWarnings("Jokin meni vikaan etsittäessä juoksijan tietoja: " + res.description);
+                    }
+                }
             }
         }
     }
@@ -178,9 +178,9 @@ public class mainloop extends Thread {
         stop = true;
     }
 
-	
+    
 
-	//Hakee tiedot kaikista päivän tapahtumista.
+    //Hakee tiedot kaikista päivän tapahtumista.
     public Eventcollection getKohteet() throws IOException {
         UI.writetoEvents("Haetaan päivän tapahtumia...");
         HttpUrl url = new HttpUrl.Builder()
@@ -202,22 +202,22 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Päivän kohteiden haku epäonnistui: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parseEventsJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get events, error: " + ex + "\ntext returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
+            try {
+                returnable = CON.parseEventsJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get events, error: " + ex + "\ntext returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
         }
-		if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+        if(returnable != null && returnable.description == null) { 
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 
-	//Hakee kaikki lähdöt yksittäisestä tapahtumasta.
+    //Hakee kaikki lähdöt yksittäisestä tapahtumasta.
     public Racescollection getLahdot(int eventID) throws IOException {
         UI.writetoEvents("Haetaan lähtöjä eventID: " + eventID);
         HttpUrl url = new HttpUrl.Builder()
@@ -239,22 +239,22 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Lähtöjen haku epäonnistui tapahtumalle: " + eventID + " koska: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parseRacesJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get races, error: " + ex + "\ntext returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
+            try {
+                returnable = CON.parseRacesJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get races, error: " + ex + "\ntext returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
         }
-		if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+        if(returnable != null && returnable.description == null) { 
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 
-		//Hakee kaikki pelikohteet, jotka liittyvät yksittäiseen lähtöön.
+        //Hakee kaikki pelikohteet, jotka liittyvät yksittäiseen lähtöön.
     public Poolscollection getPools(int raceID) throws IOException {
         UI.writetoEvents("Haetaan pelikohteita raceID " + raceID);
         HttpUrl url = new HttpUrl.Builder()
@@ -276,29 +276,29 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Pelikohteiden haku epäonnistui lähdölle: " + raceID + " koska: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parsePoolsJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get pools, error: " + ex + "\ntext returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
-			if(returnable != null) {
-				for (Pools p : returnable.collection) {
-					int cur = p.poolId;
-					p.setPool(getKertoimet(cur));
-				}
+            try {
+                returnable = CON.parsePoolsJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get pools, error: " + ex + "\ntext returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
+            if(returnable != null) {
+                for (Pools p : returnable.collection) {
+                    int cur = p.poolId;
+                    p.setPool(getKertoimet(cur));
+                }
             }
         }
 
         if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 
-	//Hakee kaikki pelikohteet, jotka liittyvät yksittäiseen tapahtumaan.
+    //Hakee kaikki pelikohteet, jotka liittyvät yksittäiseen tapahtumaan.
     public Poolscollection getPoolsforEvent(int eventID) throws IOException {
         UI.writetoEvents("Haetaan pelikohteita eventID " + eventID);
         HttpUrl url = new HttpUrl.Builder()
@@ -320,29 +320,29 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Pelikohteiden haku epäonnistui tapahtumalle: " + eventID + " koska: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parsePoolsJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get pools, error: " + ex + "\ntext returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
-			if(returnable != null) {
-				for (Pools p : returnable.collection) {
-					int cur = p.poolId;
-					p.setPool(getKertoimet(cur));
-				}
-			}
+            try {
+                returnable = CON.parsePoolsJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get pools, error: " + ex + "\ntext returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
+            if(returnable != null) {
+                for (Pools p : returnable.collection) {
+                    int cur = p.poolId;
+                    p.setPool(getKertoimet(cur));
+                }
+            }
         }
 
         if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 
-	//Hakee pelikertoimet yksittäiselle pelikohteelle.
+    //Hakee pelikertoimet yksittäiselle pelikohteelle.
     public Pool getKertoimet(int poolID) throws IOException {
         UI.writetoEvents("Haetaan kertoimia poolID " + poolID);
         HttpUrl url = new HttpUrl.Builder()
@@ -364,42 +364,42 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Kertoimien haku epäonnistui kohteelle: " + poolID + " koska: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parseOddsJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get odds, error: " + ex + "text returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
+            try {
+                returnable = CON.parseOddsJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get odds, error: " + ex + "text returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
         }
         if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 
-	//Apumetodi prioriteettijonon luomiseksi päivittäisen päivityksen yhteydessä.
+    //Apumetodi prioriteettijonon luomiseksi päivittäisen päivityksen yhteydessä.
     public void constructUpdateQueue(Eventcollection e) {
         updateQue.clear();
         updateQue.add(e);
         for (Events eve : e.collection) {
             for (Races r : eve.getRaces().collection) {
-				//Mahdollistaa tulosten automaattisen haun, käyttöliittymä ei kuitenkaan toistaseksi näytä tuloksia,
-				//joten käytänössä tuloksia ei koskaan haeta.
-				if(r.updateTime != -1) {
-					updateQue.add(r);
-				}
+                //Mahdollistaa tulosten automaattisen haun, käyttöliittymä ei kuitenkaan toistaseksi näytä tuloksia,
+                //joten käytänössä tuloksia ei koskaan haeta.
+                if(r.updateTime != -1) {
+                    updateQue.add(r);
+                }
                 for (Pools p : r.getPools()) {
-					if(p.updateTime != -1) {
-						updateQue.add(p);
-					}
+                    if(p.updateTime != -1) {
+                        updateQue.add(p);
+                    }
                 }
             }
         }
     }
-	
-	//Hakee yksittäisen lähdön tulokset.
+    
+    //Hakee yksittäisen lähdön tulokset.
     public Tulokset getResult(int raceID) throws IOException {
         Tulokset returnable = null;
         UI.writetoEvents("Haetaan tuloksia raceID " + raceID);
@@ -421,30 +421,30 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Tulosten haku epäonnistui lähdölle: " + raceID + " koska: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parseTuloksetJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get results, error: " + ex + "text returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
+            try {
+                returnable = CON.parseTuloksetJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get results, error: " + ex + "text returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
         }
-		if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+        if(returnable != null && returnable.description == null) { 
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 
-	/*
-	Laittaa pelikohteet karttoihin niin, että pelikohteita on mahdollista hakea tietämättä pelikohteen IDtä.
-	Lopullisesta kartassa tapahtuman IDllä saadaan kartta, jossa kaikki tapahtumaan liittyvät pelikohteet löytyvät (ensimmäisen)
-	lähdön IDllä ja tämän jälkeen lähdössä olevat löytyvät pelikohteen nimellä. Samaa ilmaisutapaa käytetään käyttöliittymän kertoimet
-	sivulla.
-	Lopullisesta kartasta tulee hieman monimutkainen (Map<int, Map<int, Map<String, Pools>>>).
-	*/
+    /*
+    Laittaa pelikohteet karttoihin niin, että pelikohteita on mahdollista hakea tietämättä pelikohteen IDtä.
+    Lopullisesta kartassa tapahtuman IDllä saadaan kartta, jossa kaikki tapahtumaan liittyvät pelikohteet löytyvät (ensimmäisen)
+    lähdön IDllä ja tämän jälkeen lähdössä olevat löytyvät pelikohteen nimellä. Samaa ilmaisutapaa käytetään käyttöliittymän kertoimet
+    sivulla.
+    Lopullisesta kartasta tulee hieman monimutkainen (Map<int, Map<int, Map<String, Pools>>>).
+    */
     private void poolstoMap(Poolscollection pools) {
-		
+        
         for (Pools p : pools.collection) {
             HashMap<Integer, HashMap<String, Pools>> poolsById = new HashMap<>();
             HashMap<String, Pools> poolByName = new HashMap<>();
@@ -465,27 +465,27 @@ public class mainloop extends Thread {
         
     }
 
-	//Hakee kartasta IDtä vastaavan listan tai tekee uuden listan (eli ei palauta nullia)
+    //Hakee kartasta IDtä vastaavan listan tai tekee uuden listan (eli ei palauta nullia)
     private ArrayList<Pools> getPoolsfromMap(int raceID) {
         return (this.allPools.get(raceID) != null) ? this.allPools.get(raceID):new ArrayList<>();
     }
 
-	/*
-	Metodi on suunniteltu ajettavaksi päivittäin, näinollen se tyhjentää (edellisen päivän) monia tietorakenteita ja luo ne uudestaan.
-	Lisäksi metodi lisää automaattisten päivitysten ensimmäisen päivityskerran ajankohdan muuttujiin.
-	
-	*/
+    /*
+    Metodi on suunniteltu ajettavaksi päivittäin, näinollen se tyhjentää (edellisen päivän) monia tietorakenteita ja luo ne uudestaan.
+    Lisäksi metodi lisää automaattisten päivitysten ensimmäisen päivityskerran ajankohdan muuttujiin.
+    
+    */
     public void dailyUpdate() {
-		allPools.clear();
+        allPools.clear();
         reorderedPools.clear();
         reorderedPools = new HashMap<>();
-		boolean somethingNotRight = false;
-		try {
-			kohteet = getKohteet();
-		}
-		catch (IOException ex) {
-			UI.writetoWarnings(ex.getMessage());
-		}
+        boolean somethingNotRight = false;
+        try {
+            kohteet = getKohteet();
+        }
+        catch (IOException ex) {
+            UI.writetoWarnings(ex.getMessage());
+        }
 
         try {
             UI.updateEventsTable(kohteet.collection);
@@ -507,25 +507,25 @@ public class mainloop extends Thread {
                     ArrayList<Pools> pools = getPoolsfromMap(raceID);
                     
                     r.setPools(pools);
-					for(Pools p:pools) {
-						p.updateTime = p.firstRaceStartTime - startAutoUpdate*60*1000;
-					}
+                    for(Pools p:pools) {
+                        p.updateTime = p.firstRaceStartTime - startAutoUpdate*60*1000;
+                    }
                 }
                 i++;
                 UI.changeTotoLoadProgress(i);
             }
             UI.racestoEvents(kohteet.collection);
             UI.fillPoolsTab(kohteet.collection);
-			
+            
         }
-	
+    
         catch (Exception e) {
-		    UI.writetoWarnings("Jokin meni vikaan: " + e);
-			somethingNotRight = true;
-		   }
+            UI.writetoWarnings("Jokin meni vikaan: " + e);
+            somethingNotRight = true;
+           }
 
-		//Lisätään päivittäinen päivitys itsessään prioriteetti jonoon oikeaan ajanhetkeen.
-		//Alunperin päivitys oli kovakoodattu tapahtumaan klo 8, tämän vuoksi hämäävä atribuutin nimi. Refactorointia odotellessa...
+        //Lisätään päivittäinen päivitys itsessään prioriteetti jonoon oikeaan ajanhetkeen.
+        //Alunperin päivitys oli kovakoodattu tapahtumaan klo 8, tämän vuoksi hämäävä atribuutin nimi. Refactorointia odotellessa...
         LocalDateTime localNow = LocalDateTime.now();
         ZoneId currentZone = ZoneId.of("Europe/Helsinki");
         ZonedDateTime zonedNow = ZonedDateTime.of(localNow, currentZone);
@@ -534,18 +534,18 @@ public class mainloop extends Thread {
         if (zonedNow.compareTo(zonedNext8) > 0) {
             zonedNext8 = zonedNext8.plusDays(1);
         }
-		if(somethingNotRight) {
-			UI.writetoWarnings("Jokin meni vikaan, estetään tulevat päivitykset. Voit sammutta ohjelman");
-		}
-		else {
-			kohteet.updateTime = zonedNext8.toEpochSecond() * 1000;
-			constructUpdateQueue(kohteet);
-		}
+        if(somethingNotRight) {
+            UI.writetoWarnings("Jokin meni vikaan, estetään tulevat päivitykset. Voit sammutta ohjelman");
+        }
+        else {
+            kohteet.updateTime = zonedNext8.toEpochSecond() * 1000;
+            constructUpdateQueue(kohteet);
+        }
     }
 
 
     
-	//Hakee pelikohteen tulokset
+    //Hakee pelikohteen tulokset
     private Tulokset getResultPool(int poolId) throws IOException {
         Tulokset returnable = null;
         UI.writetoEvents("Haetaan tuloksia raceID " + poolId);
@@ -567,19 +567,19 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Tulosten haku epäonnistui kohteelle: " + poolId + " koska: " + ex);
         }
         if (res != null) {
-			try {
-				returnable = CON.parseTuloksetJson(res);
-			}
-			catch (Exception ex) {
-				UI.writetoWarnings("Failed to get results, error: " + ex + "text returned by API: " + res);
-				throw new IOException("Data returned by API could not be deserialized");
-			}
+            try {
+                returnable = CON.parseTuloksetJson(res);
+            }
+            catch (Exception ex) {
+                UI.writetoWarnings("Failed to get results, error: " + ex + "text returned by API: " + res);
+                throw new IOException("Data returned by API could not be deserialized");
+            }
         }
         return returnable;
     }
     
-	
-	//Hakee tarkemmat tiedot kisaajasta.
+    
+    //Hakee tarkemmat tiedot kisaajasta.
     public RunnerInfoCollection getRunnerInfo(int raceOrPoolId, String idType) throws IOException {
        RunnerInfoCollection returnable = null;
         UI.writetoEvents("Haetaan juoksijan tietoja " + idType + "ID: " + raceOrPoolId);
@@ -601,18 +601,18 @@ public class mainloop extends Thread {
             UI.writetoWarnings("Juoksijan tietojen haku epäonnistui. " +idType + "ID: " + raceOrPoolId +  " koska: " + ex);
         }
         if (res != null) {
-		   try {
-			   returnable = CON.parseRunnerInfoJson(res);
-		   }
-		   catch (Exception ex) {
-			   UI.writetoWarnings("Failed to get runner info, error: " + ex + "\ntext returned by API: " + res);
-			   throw new IOException("Data returned by API could not be deserialized");
-		   }
+           try {
+               returnable = CON.parseRunnerInfoJson(res);
+           }
+           catch (Exception ex) {
+               UI.writetoWarnings("Failed to get runner info, error: " + ex + "\ntext returned by API: " + res);
+               throw new IOException("Data returned by API could not be deserialized");
+           }
         }
-		if(returnable != null && returnable.description == null) { 
-			return returnable;
-		}
-		else if(returnable == null) return null;
-		else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
+        if(returnable != null && returnable.description == null) { 
+            return returnable;
+        }
+        else if(returnable == null) return null;
+        else throw new IOException("API returned error code: " + returnable.code + "with description: " + returnable.description);
     }
 }

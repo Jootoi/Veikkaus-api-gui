@@ -29,9 +29,9 @@ public class Tulokset {
     int raceNumber;
     int raceId;
     int poolId;
-	
-	String poolType; //vain haettaessa tietylle pelikohteelle
-	String poolName; //Vain haettaessa tietylle pelikohteelle
+    
+    String poolType; //vain haettaessa tietylle pelikohteelle
+    String poolName; //Vain haettaessa tietylle pelikohteelle
     String raceStatus;
     String seriesSpesification;
     String toteResult;
