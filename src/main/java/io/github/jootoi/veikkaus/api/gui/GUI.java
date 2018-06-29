@@ -606,318 +606,317 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         RaceTabforRaceId.clear();
         //Uloin luuppi luo tapahtumien välilehdet
         for (Events e : data) {
-            if (e != null) {
-                javax.swing.JTabbedPane tmp1 = new javax.swing.JTabbedPane();
-                String tabname1 = e.trackName;
-                if (e.getRaces() != null) {
-                    //Sitten luodaan lähtöjen välilehdet
-                    for (Races r : e.getRaces().collection) {
+            if (e == null) {continue;}
+            javax.swing.JTabbedPane tmp1 = new javax.swing.JTabbedPane();
+            String tabname1 = e.trackName;
+            if (e.getRaces() == null) {continue;}
+            //Sitten luodaan lähtöjen välilehdet
+            for (Races r : e.getRaces().collection) {
 
-                        javax.swing.JTabbedPane tmp2 = new javax.swing.JTabbedPane();
-                        String tabname2 = "Lähtö " + Integer.toString(r.number);
-                        RaceTabforRaceId.put(r.raceId, tmp2);
-                        //Ja lopuksi pelikohteiden välilehdet ja taulukot.
-                        for (Pools p : r.getPools()) {
-                            RaceforPoolid.put(p.poolId, r);
-                            if (p.getPool() != null) {
-                                //Luodaan taulukon viereen tuleva paneeli.
-                                javax.swing.JPanel tmpContainer = new javax.swing.JPanel();
-                                tmpContainer.setLayout(new BorderLayout());
-                                MyButton tmpButton = new MyButton("Päivitä");
-                                MyButton resultButton = new MyButton("Hae tulokset, jos mahdollista");
-                                tmpButton.setRelatedObject(p);
-                                resultButton.setId(r.raceId);
-                                tmpButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        jButton2ActionPerformed(evt);
-                                    }
-                                });
-                                resultButton.addActionListener(new java.awt.event.ActionListener() {
-                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                        resultButtonActionPerformed(evt);
-                                    }
-                                });
-                                
-                                
-                                javax.swing.JPanel labelContainer = new javax.swing.JPanel();
-                                labelContainer.setLayout(new BoxLayout(labelContainer, BoxLayout.Y_AXIS));
-                                JLabel updateTimeLabel = new JLabel("Päivitystä yritetty viimeksi: " + LocalDateTime.now().format(timeOnly).toString());
-                                LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(p.getPool().updated), ZoneId.systemDefault());
-                                JLabel dataTimestamp = new JLabel("Data päivittynyt viimeksi: " + date.format(timeOnly).toString());
-                                date = LocalDateTime.ofInstant(Instant.ofEpochMilli(r.startTime), ZoneId.systemDefault());
-                                JLabel startTime = new JLabel("Lähtö lähtee: " + date.format(timeOnly).toString());
-                                JLabel PoolLabel = new JLabel("Kohteen tunniste(PoolID): " + p.poolId);
-                                labelContainer.add(updateTimeLabel);
-                                labelContainer.add(dataTimestamp);
-                                labelContainer.add(startTime);
-                                labelContainer.add(PoolLabel);
-                                labelContainer.add(tmpButton);
-                                labelContainer.add(resultButton);
-                                //paaneli luotu
-                                //Lisätään paneeli mappiin myöhempää käyttöä varten, avaimeksi pelikohteen id-luku.
-                                oddsRightPanelbyId.put(p.poolId, labelContainer);
-                                tmpContainer.add(labelContainer,BorderLayout.EAST);
-                                
-                                //Aloitetaan taulukoiden luonti.
-                                javax.swing.JScrollPane tmp4 = new javax.swing.JScrollPane();
-                                tmpContainer.add(tmp4);
-                                String tabname3 = p.poolName;
-                                int total = p.netSales;
-                                javax.swing.JTable tmp3 = new javax.swing.JTable();
-                                tmp4.setName(Integer.toString(p.poolId));
-                                //Taulukon muoto riippuu pelikohteen tyypistä.
-                                switch (tabname3) {
-                                    case "Voittaja": {
-                                        Object[][] table = new Object[p.getPool().odds.size()][3];
-                                        String[] labels = new String[]{"Numero", "Kerroin", "Peliprosentti"};
-                                        int i = 0;
-                                        for (Odds o : p.getPool().odds) {
-                                            table[i][0] = o.runnerNumber;
-                                            table[i][1] = (double) (o.probable) / 100;
-                                            if (total != 0) {
-                                                table[i][2] = (o.amount * 100 / total);
-                                            }
-                                            else {
-                                                table[i][2] = 0;
-                                            }
-                                            i++;
-                                        }
-                                        tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
-                                            Class[] types = new Class[]{
-                                                java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class
-                                            };
-                                            boolean[] canEdit = new boolean[]{
-                                                false, false, false
-                                            };
-                                            @Override
-                                            public Class getColumnClass(int columnIndex) {
-                                                return types[columnIndex];
-                                            }
+                javax.swing.JTabbedPane tmp2 = new javax.swing.JTabbedPane();
+                String tabname2 = "Lähtö " + Integer.toString(r.number);
+                RaceTabforRaceId.put(r.raceId, tmp2);
+                //Ja lopuksi pelikohteiden välilehdet ja taulukot.
+                for (Pools p : r.getPools()) {
+                    RaceforPoolid.put(p.poolId, r);
+                    if (p.getPool() == null) {continue;}
+                    //Luodaan taulukon viereen tuleva paneeli.
+                    javax.swing.JPanel tmpContainer = new javax.swing.JPanel();
+                    tmpContainer.setLayout(new BorderLayout());
+                    MyButton tmpButton = new MyButton("Päivitä");
+                    MyButton resultButton = new MyButton("Hae tulokset, jos mahdollista");
+                    tmpButton.setRelatedObject(p);
+                    resultButton.setId(r.raceId);
+                    tmpButton.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            jButton2ActionPerformed(evt);
+                        }
+                    });
+                    resultButton.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            resultButtonActionPerformed(evt);
+                        }
+                    });
 
-                                            @Override
-                                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                return canEdit[columnIndex];
-                                            }
-                                        });
-                                        /*Taulukon listener joka hakee lisätietoja hevosesta clickattaessa taulukkoon.
-                                         Käytetään (toistaiseksi) vain voittaja ja sija pelien yhteydessä.
-                                        */
-                                        tmp3.addMouseListener(new MouseAdapter() {
-                                            public void mousePressed(java.awt.event.MouseEvent e) {
-                                                jTablePressEvent(e);
-                                            }
-                                        });
-                                        break;
-                                    }
-                                    case "Sija": {
-                                        Object[][] table = new Object[p.getPool().odds.size()][4];
-                                        String[] labels = new String[]{"Numero", "Min.", "Max.", "Peliprosentti"};
-                                        int i = 0;
-                                        for (Odds o : p.getPool().odds) {
-                                            table[i][0] = o.runnerNumber;
-                                            table[i][1] = (double) (o.minProbable) / 100;
-                                            table[i][2] = (double) (o.maxProbable) / 100;
-                                            if (total != 0) {
-                                                table[i][3] = (o.amount * 100 / total);
-                                            }
-                                            else {
-                                                table[i][3] = 0;
-                                            }
-                                            i++;
-                                        }
-                                        tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
-                                            Class[] types = new Class[]{
-                                                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class
-                                            };
-                                            boolean[] canEdit = new boolean[]{
-                                                false, false, false, false
-                                            };
+                    javax.swing.JPanel labelContainer = new javax.swing.JPanel();
+                    labelContainer.setLayout(new BoxLayout(labelContainer, BoxLayout.Y_AXIS));
+                    JLabel updateTimeLabel = new JLabel("Päivitystä yritetty viimeksi: " + LocalDateTime.now().format(timeOnly).toString());
+                    LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(p.getPool().updated), ZoneId.systemDefault());
+                    JLabel dataTimestamp = new JLabel("Data päivittynyt viimeksi: " + date.format(timeOnly).toString());
+                    date = LocalDateTime.ofInstant(Instant.ofEpochMilli(r.startTime), ZoneId.systemDefault());
+                    JLabel startTime = new JLabel("Lähtö lähtee: " + date.format(timeOnly).toString());
+                    JLabel PoolLabel = new JLabel("Kohteen tunniste(PoolID): " + p.poolId);
+                    labelContainer.add(updateTimeLabel);
+                    labelContainer.add(dataTimestamp);
+                    labelContainer.add(startTime);
+                    labelContainer.add(PoolLabel);
+                    labelContainer.add(tmpButton);
+                    labelContainer.add(resultButton);
+                    //paaneli luotu
+                    //Lisätään paneeli mappiin myöhempää käyttöä varten, avaimeksi pelikohteen id-luku.
+                    oddsRightPanelbyId.put(p.poolId, labelContainer);
+                    tmpContainer.add(labelContainer, BorderLayout.EAST);
 
-                                            @Override
-                                            public Class getColumnClass(int columnIndex) {
-                                                return types[columnIndex];
-                                            }
+                    //Aloitetaan taulukoiden luonti.
+                    javax.swing.JScrollPane tmp4 = new javax.swing.JScrollPane();
+                    tmpContainer.add(tmp4);
+                    String tabname3 = p.poolName;
+                    int total = p.netSales;
+                    javax.swing.JTable tmp3 = new javax.swing.JTable();
+                    tmp4.setName(Integer.toString(p.poolId));
+                    //Taulukon muoto riippuu pelikohteen tyypistä.
+                    switch (tabname3) {
+                        case "Voittaja": {
+                            Object[][] table = new Object[p.getPool().odds.size()][3];
+                            String[] labels = new String[]{"Numero", "Kerroin", "Peliprosentti"};
+                            int i = 0;
+                            for (Odds o : p.getPool().odds) {
+                                table[i][0] = o.runnerNumber;
+                                table[i][1] = (double) (o.probable) / 100;
+                                if (total != 0) {
+                                    table[i][2] = (o.amount * 100 / total);
+                                }
+                                else {
+                                    table[i][2] = 0;
+                                }
+                                i++;
+                            }
+                            tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
+                                Class[] types = new Class[]{
+                                    java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class
+                                };
+                                boolean[] canEdit = new boolean[]{
+                                    false, false, false
+                                };
 
-                                            @Override
-                                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                return canEdit[columnIndex];
-                                            }
-                                        });
-                                        tmp3.addMouseListener(new MouseAdapter() {
-                                            public void mousePressed(java.awt.event.MouseEvent e) {
-                                                jTablePressEvent(e);
-                                            }
-                                        });
-                                        break;
-                                    }
-                                    case "Toto5":
-                                    case "Toto54":
-                                    case "Toto75":
-                                    case "Toto76":
-                                    case "Toto8":
-                                    case "Toto87":
-                                    case "Toto86":
-                                    case "Toto65":
-                                    case "Toto6":
-                                    case "Toto64":
-                                    case "Toto4": {
-                                        int amount = p.getPool().odds.size();
-                                        int lahtoja = p.getPool().odds.get(amount - 1).legNumber;
-                                        Object[][] table = new Object[16][lahtoja + 1];
-                                        String[] labels = new String[lahtoja + 1];
-                                        labels[0] = "#";
-                                        int j = 1;
-                                        while (j < lahtoja + 1) {
-                                            labels[j] = "Lähtö " + Integer.toString(j);
-                                            j++;
-                                        }
-                                        int i = 0;
-                                        for (Odds o : p.getPool().odds) {
-                                            table[o.runnerNumber - 1][0] = o.runnerNumber;
-                                            table[o.runnerNumber - 1][o.legNumber] = o.percentage / 100;
-                                            i++;
-                                        }
-                                        tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
-
-                                            @Override
-                                            public Class getColumnClass(int columnIndex) {
-                                                return java.lang.Integer.class;
-                                            }
-
-                                            @Override
-                                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                return false;
-                                            }
-                                        });
-                                        break;
-                                    }
-                                    case "Eksakta":
-                                    case "Päivän Duo":
-                                    case "Kaksari": {
-                                        Object[][] table = new Object[p.getPool().odds.size()][3];
-                                        String[] labels = new String[]{"Juoksija 1", "Juoksija 2", "Kerroin"};
-                                        int i = 0;
-                                        for (Odds o : p.getPool().odds) {
-                                            table[i][0] = o.runnerNumber1;
-                                            table[i][1] = o.runnerNumber2;
-                                            table[i][2] = (double) (o.probable) / 100;
-                                            i++;
-                                        }
-                                        tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
-                                            Class[] types = new Class[]{
-                                                java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
-                                            };
-                                            boolean[] canEdit = new boolean[]{
-                                                false, false, false
-                                            };
-
-                                            @Override
-                                            public Class getColumnClass(int columnIndex) {
-                                                return types[columnIndex];
-                                            }
-
-                                            @Override
-                                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                return canEdit[columnIndex];
-                                            }
-                                        });
-                                        break;
-                                    }
-                                    case "Troikka": {
-                                        Object[][] table = new Object[p.getPool().odds.size()][4];
-                                        String[] labels = new String[]{"Juoksija 1", "Juoksija 2", "Juoksija 3", "Kerroin"};
-                                        int i = 0;
-                                        for (Odds o : p.getPool().odds) {
-                                            table[i][0] = o.runnerNumber1;
-                                            table[i][1] = o.runnerNumber2;
-                                            table[i][2] = o.runnerNumber3;
-                                            table[i][3] = (double) (o.probable) / 100;
-                                            i++;
-                                        }
-                                        tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
-                                            Class[] types = new Class[]{
-                                                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
-                                            };
-                                            boolean[] canEdit = new boolean[]{
-                                                false, false, false, false
-                                            };
-
-                                            @Override
-                                            public Class getColumnClass(int columnIndex) {
-                                                return types[columnIndex];
-                                            }
-
-                                            @Override
-                                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                return canEdit[columnIndex];
-                                            }
-                                        });
-                                        break;
-                                    }
-                                    case "Sijapari": {
-                                        Object[][] table = new Object[p.getPool().odds.size()][4];
-                                        String[] labels = new String[]{"Juoksija 1", "Juoksija 2", "Min.", "Max."};
-                                        int i = 0;
-                                        for (Odds o : p.getPool().odds) {
-                                            table[i][0] = o.runnerNumber1;
-                                            table[i][1] = o.runnerNumber2;
-                                            table[i][2] = (double) o.minProbable / 100;
-                                            table[i][3] = (double) o.maxProbable / 100;
-                                            i++;
-                                        }
-                                        tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
-                                            Class[] types = new Class[]{
-                                                java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
-                                            };
-                                            boolean[] canEdit = new boolean[]{
-                                                false, false, false, false
-                                            };
-
-                                            @Override
-                                            public Class getColumnClass(int columnIndex) {
-                                                return types[columnIndex];
-                                            }
-
-                                            @Override
-                                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                return canEdit[columnIndex];
-                                            }
-                                        });
-                                        break;
-                                    }
-                                    default:
-                                        writetoWarnings("Pelikohteen nimen tunnistamisessa epäonnistuttiin: " + tabname3);
-                                        break;
+                                @Override
+                                public Class getColumnClass(int columnIndex) {
+                                    return types[columnIndex];
                                 }
 
-                                
-                                //Myös talukoiden löytäminen kohteen id:n perusteella on kätevää (ja toisinpäin)
-                                //kahteen suuntaan assosiatiivinen kartta olisi käynyt myös.
-                                oddsTablebyId.put(p.poolId, tmp3);
-                                IdbyOddsTable.put(tmp3,p.poolId);
-
-                                java.awt.EventQueue.invokeLater(new Runnable() {
-                                    public void run() {
-                                        tmp4.setViewportView(tmp3);
-                                        tmp2.addTab(tabname3,tmpContainer);
-                                    }
-                                });
-                            }
+                                @Override
+                                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                    return canEdit[columnIndex];
+                                }
+                            });
+                            /*
+                             * Taulukon listener joka hakee lisätietoja
+                             * hevosesta clickattaessa taulukkoon. Käytetään
+                             * (toistaiseksi) vain voittaja ja sija pelien
+                             * yhteydessä.
+                             */
+                            tmp3.addMouseListener(new MouseAdapter() {
+                                public void mousePressed(java.awt.event.MouseEvent e) {
+                                    jTablePressEvent(e);
+                                }
+                            });
+                            break;
                         }
-
-                        java.awt.EventQueue.invokeLater(new Runnable() {
-                            public void run() {
-                                tmp1.addTab(tabname2, tmp2);
+                        case "Sija": {
+                            Object[][] table = new Object[p.getPool().odds.size()][4];
+                            String[] labels = new String[]{"Numero", "Min.", "Max.", "Peliprosentti"};
+                            int i = 0;
+                            for (Odds o : p.getPool().odds) {
+                                table[i][0] = o.runnerNumber;
+                                table[i][1] = (double) (o.minProbable) / 100;
+                                table[i][2] = (double) (o.maxProbable) / 100;
+                                if (total != 0) {
+                                    table[i][3] = (o.amount * 100 / total);
+                                }
+                                else {
+                                    table[i][3] = 0;
+                                }
+                                i++;
                             }
-                        });
+                            tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
+                                Class[] types = new Class[]{
+                                    java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class
+                                };
+                                boolean[] canEdit = new boolean[]{
+                                    false, false, false, false
+                                };
+
+                                @Override
+                                public Class getColumnClass(int columnIndex) {
+                                    return types[columnIndex];
+                                }
+
+                                @Override
+                                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                    return canEdit[columnIndex];
+                                }
+                            });
+                            tmp3.addMouseListener(new MouseAdapter() {
+                                public void mousePressed(java.awt.event.MouseEvent e) {
+                                    jTablePressEvent(e);
+                                }
+                            });
+                            break;
+                        }
+                        case "Toto5":
+                        case "Toto54":
+                        case "Toto75":
+                        case "Toto76":
+                        case "Toto8":
+                        case "Toto87":
+                        case "Toto86":
+                        case "Toto65":
+                        case "Toto6":
+                        case "Toto64":
+                        case "Toto4": {
+                            int amount = p.getPool().odds.size();
+                            int lahtoja = p.getPool().odds.get(amount - 1).legNumber;
+                            Object[][] table = new Object[16][lahtoja + 1];
+                            String[] labels = new String[lahtoja + 1];
+                            labels[0] = "#";
+                            int j = 1;
+                            while (j < lahtoja + 1) {
+                                labels[j] = "Lähtö " + Integer.toString(j);
+                                j++;
+                            }
+                            int i = 0;
+                            for (Odds o : p.getPool().odds) {
+                                table[o.runnerNumber - 1][0] = o.runnerNumber;
+                                table[o.runnerNumber - 1][o.legNumber] = o.percentage / 100;
+                                i++;
+                            }
+                            tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
+
+                                @Override
+                                public Class getColumnClass(int columnIndex) {
+                                    return java.lang.Integer.class;
+                                }
+
+                                @Override
+                                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                    return false;
+                                }
+                            });
+                            break;
+                        }
+                        case "Eksakta":
+                        case "Päivän Duo":
+                        case "Kaksari": {
+                            Object[][] table = new Object[p.getPool().odds.size()][3];
+                            String[] labels = new String[]{"Juoksija 1", "Juoksija 2", "Kerroin"};
+                            int i = 0;
+                            for (Odds o : p.getPool().odds) {
+                                table[i][0] = o.runnerNumber1;
+                                table[i][1] = o.runnerNumber2;
+                                table[i][2] = (double) (o.probable) / 100;
+                                i++;
+                            }
+                            tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
+                                Class[] types = new Class[]{
+                                    java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
+                                };
+                                boolean[] canEdit = new boolean[]{
+                                    false, false, false
+                                };
+
+                                @Override
+                                public Class getColumnClass(int columnIndex) {
+                                    return types[columnIndex];
+                                }
+
+                                @Override
+                                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                    return canEdit[columnIndex];
+                                }
+                            });
+                            break;
+                        }
+                        case "Troikka": {
+                            Object[][] table = new Object[p.getPool().odds.size()][4];
+                            String[] labels = new String[]{"Juoksija 1", "Juoksija 2", "Juoksija 3", "Kerroin"};
+                            int i = 0;
+                            for (Odds o : p.getPool().odds) {
+                                table[i][0] = o.runnerNumber1;
+                                table[i][1] = o.runnerNumber2;
+                                table[i][2] = o.runnerNumber3;
+                                table[i][3] = (double) (o.probable) / 100;
+                                i++;
+                            }
+                            tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
+                                Class[] types = new Class[]{
+                                    java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class
+                                };
+                                boolean[] canEdit = new boolean[]{
+                                    false, false, false, false
+                                };
+
+                                @Override
+                                public Class getColumnClass(int columnIndex) {
+                                    return types[columnIndex];
+                                }
+
+                                @Override
+                                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                    return canEdit[columnIndex];
+                                }
+                            });
+                            break;
+                        }
+                        case "Sijapari": {
+                            Object[][] table = new Object[p.getPool().odds.size()][4];
+                            String[] labels = new String[]{"Juoksija 1", "Juoksija 2", "Min.", "Max."};
+                            int i = 0;
+                            for (Odds o : p.getPool().odds) {
+                                table[i][0] = o.runnerNumber1;
+                                table[i][1] = o.runnerNumber2;
+                                table[i][2] = (double) o.minProbable / 100;
+                                table[i][3] = (double) o.maxProbable / 100;
+                                i++;
+                            }
+                            tmp3.setModel(new javax.swing.table.DefaultTableModel(table, labels) {
+                                Class[] types = new Class[]{
+                                    java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+                                };
+                                boolean[] canEdit = new boolean[]{
+                                    false, false, false, false
+                                };
+
+                                @Override
+                                public Class getColumnClass(int columnIndex) {
+                                    return types[columnIndex];
+                                }
+
+                                @Override
+                                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                    return canEdit[columnIndex];
+                                }
+                            });
+                            break;
+                        }
+                        default:
+                            writetoWarnings("Pelikohteen nimen tunnistamisessa epäonnistuttiin: " + tabname3);
+                            break;
                     }
+
+                    //Myös talukoiden löytäminen kohteen id:n perusteella on kätevää (ja toisinpäin)
+                    //kahteen suuntaan assosiatiivinen kartta olisi käynyt myös.
+                    oddsTablebyId.put(p.poolId, tmp3);
+                    IdbyOddsTable.put(tmp3, p.poolId);
+
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         public void run() {
-                            jTabbedPane4.addTab(tabname1, tmp1);
+                            tmp4.setViewportView(tmp3);
+                            tmp2.addTab(tabname3, tmpContainer);
                         }
                     });
                 }
+
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        tmp1.addTab(tabname2, tmp2);
+                    }
+                });
             }
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    jTabbedPane4.addTab(tabname1, tmp1);
+                }
+            });
         }
     }
 
